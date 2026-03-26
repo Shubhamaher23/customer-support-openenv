@@ -1,0 +1,55 @@
+name: customer-support-triage
+version: "1.0.0"
+description: >
+  A real-world OpenEnv environment where an AI agent learns to triage,
+    categorize, prioritize, and respond to customer support tickets.
+    author: Shubham Aher
+    tasks:
+      - id: ticket_classification
+          difficulty: easy
+              description: Classify a customer support ticket into the correct category.
+                  score_range: [0.0, 1.0]
+                    - id: ticket_prioritization
+                        difficulty: medium
+                            description: Classify AND correctly prioritize a ticket (low/medium/high/critical).
+                                score_range: [0.0, 1.0]
+                                  - id: ticket_response_generation
+                                      difficulty: hard
+                                          description: Classify, prioritize, AND generate an appropriate response to the ticket.
+                                              score_range: [0.0, 1.0]
+                                              observation_space:
+                                                type: object
+                                                  properties:
+                                                      ticket_id:
+                                                            type: string
+                                                                subject:
+                                                                      type: string
+                                                                          body:
+                                                                                type: string
+                                                                                    customer_tier:
+                                                                                          type: string
+                                                                                                enum: [free, pro, enterprise]
+                                                                                                    previous_contacts:
+                                                                                                          type: integer
+                                                                                                              created_at:
+                                                                                                                    type: string
+                                                                                                                    action_space:
+                                                                                                                      type: object
+                                                                                                                        properties:
+                                                                                                                            category:
+                                                                                                                                  type: string
+                                                                                                                                        enum: [billing, technical, account, feature_request, complaint, general]
+                                                                                                                                            priority:
+                                                                                                                                                  type: string
+                                                                                                                                                        enum: [low, medium, high, critical]
+                                                                                                                                                            response:
+                                                                                                                                                                  type: string
+                                                                                                                                                                      escalate:
+                                                                                                                                                                            type: boolean
+                                                                                                                                                                            api:
+                                                                                                                                                                              reset: POST /reset
+                                                                                                                                                                                step: POST /step
+                                                                                                                                                                                  state: GET /state
+                                                                                                                                                                                    tasks: GET /tasks
+                                                                                                                                                                                      grader: POST /grader
+                                                                                                                                                                                        baseline: POST /baseline
